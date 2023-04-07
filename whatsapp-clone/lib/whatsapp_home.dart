@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/pages/call_screen.dart';
 import 'package:whatsapp_clone/pages/camera_screen.dart';
 import 'package:whatsapp_clone/pages/chat_screen.dart';
+import 'package:whatsapp_clone/pages/new_message.dart';
 import 'package:whatsapp_clone/pages/status_screen.dart';
 
 
@@ -87,7 +88,10 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
           Icons.message,
           color: Colors.white,
         ),
-        onPressed: () => print("open chats"),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => const NewMessage()));
+        },
       )
           : null,
     );

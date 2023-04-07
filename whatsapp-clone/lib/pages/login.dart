@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,9 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     call();
+    super.initState();
+
   }
 
   Future<void> call() async {
@@ -102,7 +104,16 @@ class _LoginState extends State<Login> {
 
   Future signIn() async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
+      FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
+      }
+      catch (e) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
+      }
+      await firebaseFirestore.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).set({
+        "email": emailController.text.trim(),
+      });
     } on FirebaseAuthException catch (e) {
       print(e);
     }
