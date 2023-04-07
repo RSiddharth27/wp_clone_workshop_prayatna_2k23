@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/pages/call_screen.dart';
 import 'package:whatsapp_clone/pages/camera_screen.dart';
@@ -36,6 +37,7 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("WhatsApp"),
         elevation: 0.7,
         bottom: TabBar(
@@ -52,7 +54,17 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
             ),
           ],
         ),
-        actions: const <Widget>[
+        actions: <Widget>[
+          InkWell(
+            child: const Icon(Icons.logout),
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+          ),
           Icon(Icons.search),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),

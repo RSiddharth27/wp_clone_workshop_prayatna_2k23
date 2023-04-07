@@ -47,7 +47,7 @@ class ChatScreenState extends State<ChatScreen> {
                    Navigator.push(
                        context,
                        MaterialPageRoute(
-                           builder: (context) => Chat(name: dummyData[i].name, avatar: dummyData[i].avatarUrl,)));
+                           builder: (context) => Chat(name: dummyData[i].name, avatar: dummyData[i].avatarUrl,chatModel: dummyData[i],)));
                  },
               )
             ],

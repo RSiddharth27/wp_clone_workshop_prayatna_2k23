@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_clone/pages/message_format.dart';
+
+import 'package:whatsapp_clone/models/chat_model';
 
 class Chat extends StatefulWidget {
   final String name;
   final String avatar;
-  const Chat({Key? key, required this.name, required this.avatar})
+  final ChatModel chatModel;
+  const Chat(
+      {Key? key,
+      required this.name,
+      required this.avatar,
+      required this.chatModel})
       : super(key: key);
 
   @override
@@ -11,6 +19,8 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  late String chat_data;
+  final TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,18 +69,15 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
                 IconButton(
-                  icon:
-                  Icon(Icons.videocam, color: Colors.white),
+                  icon: Icon(Icons.videocam, color: Colors.white),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon:
-                  Icon(Icons.call, color: Colors.white),
+                  icon: Icon(Icons.call, color: Colors.white),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon:
-                  Icon(Icons.more_vert, color: Colors.white),
+                  icon: Icon(Icons.more_vert, color: Colors.white),
                   onPressed: () {},
                 )
               ],
@@ -80,6 +87,11 @@ class _ChatState extends State<Chat> {
       ),
       body: Stack(
         children: [
+          ListView.builder(
+              itemCount: vandu.length,
+              itemBuilder: (context, index){
+              return Message(chatModel: vandu[index]);
+          }),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -108,15 +120,21 @@ class _ChatState extends State<Chat> {
                                 color: Colors.white60,
                               ),
                               onPressed: () {}),
-                          const Expanded(
+                          Expanded(
                             child: TextField(
+                              controller: _textEditingController,
                               cursorColor: Colors.white60,
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                  hintText: "Message",
-                                  hintStyle: TextStyle(color: Colors.white60),
-                                  border: InputBorder.none,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                hintText: "Message",
+                                hintStyle: TextStyle(color: Colors.white60),
+                                border: InputBorder.none,
                               ),
+                              onChanged: (value){
+                                setState(() {
+                                  chat_data=value;
+                                });
+                              },
                             ),
                           ),
                           IconButton(
@@ -125,8 +143,8 @@ class _ChatState extends State<Chat> {
                             onPressed: () {},
                           ),
                           IconButton(
-                            icon:
-                            Icon(Icons.currency_rupee, color: Colors.white60),
+                            icon: Icon(Icons.currency_rupee,
+                                color: Colors.white60),
                             onPressed: () {},
                           ),
                           IconButton(
@@ -145,10 +163,23 @@ class _ChatState extends State<Chat> {
                         color: Colors.blueGrey, shape: BoxShape.circle),
                     child: InkWell(
                       child: const Icon(
-                        Icons.keyboard_voice,
+                        Icons.send_rounded,
                         color: Colors.white,
                       ),
-                      onLongPress: () {},
+                      onTap: (){
+                        vandu.add(ChatModel(
+                          name: "Mr. Vandu",
+                          message: chat_data,
+                          time: "15:30",
+                          avatarUrl:
+                          "https://pbs.twimg.com/profile_images/1000352327625195521/bFptdcKG_400x400.jpg",
+                          messageType: "sender",
+                        ));
+                        setState(() {
+
+                        });
+                        _textEditingController.clear();
+                      },
                     ),
                   )
                 ],
